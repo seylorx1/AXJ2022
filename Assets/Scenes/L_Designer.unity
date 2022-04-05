@@ -208,6 +208,7 @@ GameObject:
   - component: {fileID: 154059945}
   - component: {fileID: 154059947}
   - component: {fileID: 154059946}
+  - component: {fileID: 154059948}
   m_Layer: 5
   m_Name: Action Pane
   m_TagString: Untagged
@@ -228,6 +229,7 @@ RectTransform:
   m_Children:
   - {fileID: 1498175969}
   - {fileID: 762225404}
+  - {fileID: 1481841997}
   m_Father: {fileID: 527897784}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -274,6 +276,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 154059944}
   m_CullTransparentMesh: 1
+--- !u!114 &154059948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154059944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 240a1746d169c754d99154f7e79a90d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  colorTransitionSpeed: 2
+  shapeBG: {r: 1, g: 0.95652175, b: 0.7478261, a: 1}
+  patternBG: {r: 0.80799997, g: 0.97591686, b: 1, a: 1}
+  colorBG: {r: 0.9953721, g: 0.801, b: 1, a: 1}
 --- !u!1 &155841742
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,7 +305,7 @@ GameObject:
   - component: {fileID: 155841744}
   - component: {fileID: 155841746}
   m_Layer: 5
-  m_Name: Colour
+  m_Name: Color
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -306,7 +324,7 @@ RectTransform:
   m_Children:
   - {fileID: 605299088}
   m_Father: {fileID: 762225404}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -373,9 +391,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 0.98845, b: 0.986, a: 1}
-    m_HighlightedColor: {r: 0.99765784, g: 0.86226416, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9953721, g: 0.801, b: 1, a: 1}
     m_PressedColor: {r: 0.58388186, g: 0.288021, b: 0.589, a: 1}
-    m_SelectedColor: {r: 0.99765784, g: 0.86226416, b: 1, a: 1}
+    m_SelectedColor: {r: 0.9953721, g: 0.801, b: 1, a: 1}
     m_DisabledColor: {r: 1, g: 0.98845, b: 0.986, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -394,7 +412,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 155841744}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 154059948}
+        m_TargetAssemblyTypeName: UIActionPane, Assembly-CSharp
+        m_MethodName: ChangeScreen
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Color
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &223198709
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,7 +457,7 @@ RectTransform:
   m_Children:
   - {fileID: 1542391581}
   m_Father: {fileID: 762225404}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -515,7 +545,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 223198711}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 154059948}
+        m_TargetAssemblyTypeName: UIActionPane, Assembly-CSharp
+        m_MethodName: ChangeScreen
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Pattern
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -802,7 +844,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1481841997}
   - {fileID: 1435111832}
   - {fileID: 223198710}
   - {fileID: 155841743}
@@ -902,7 +943,7 @@ GameObject:
   - component: {fileID: 1435111833}
   - component: {fileID: 1435111835}
   m_Layer: 5
-  m_Name: Shapes
+  m_Name: Shape
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -921,7 +962,7 @@ RectTransform:
   m_Children:
   - {fileID: 1633297923}
   m_Father: {fileID: 762225404}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1009,7 +1050,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1435111833}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 154059948}
+        m_TargetAssemblyTypeName: UIActionPane, Assembly-CSharp
+        m_MethodName: ChangeScreen
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Shape
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1469408482
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,8 +1167,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 762225404}
-  m_RootOrder: 0
+  m_Father: {fileID: 154059945}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
