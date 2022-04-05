@@ -15,11 +15,11 @@ public class UIActionPane : MonoBehaviour
 
     public float colorTransitionSpeed = 2.0f;
     public Button shapeButton, patternButton, colorButton;
-
+    public UIActionPanePage shapePage, patternPage, colorPage;
     public Animator headingAnimator;
+    public Image selectionIcon;
 
     private SelectedPage _currentPage;
-
     private Image _image;
     private Color _startColor;
     private Color _targetColor;
@@ -61,17 +61,25 @@ public class UIActionPane : MonoBehaviour
         //Show / Hide heading based on whether the base page is selected or not.
         headingAnimator.SetBool("Show", page == SelectedPage.None);
 
-        //Update colors
+        //Reset all pages.
+        shapePage.pageSelected = false;
+        patternPage.pageSelected = false;
+        colorPage.pageSelected = false;
+
+        //Update colors and current pages.
         switch (page)
         {
             case SelectedPage.Shape:
                 _targetColor = shapeButton.colors.selectedColor;
+                shapePage.pageSelected = true;
                 break;
             case SelectedPage.Pattern:
                 _targetColor = patternButton.colors.selectedColor;
+                patternPage.pageSelected = true;
                 break;
             case SelectedPage.Color:
                 _targetColor = colorButton.colors.selectedColor;
+                colorPage.pageSelected = true;
                 break;
             default:
                 _targetColor = _startColor;
