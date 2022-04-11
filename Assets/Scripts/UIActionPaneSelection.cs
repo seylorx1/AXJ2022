@@ -4,41 +4,31 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [ExecuteInEditMode]
-public class UIActionPaneSelection : MonoBehaviour
+public class UIActionPaneSelection : UISticker
 {
+    #region Visible Variables
     public Image background;
-    public Image foreground;
-
-    public Sprite shape;
-    public Texture2D mask;
-
-    public Material maskedMaterial;
-
-    private Material _mat;
 
     [Range(0.0f, 1.0f)]
     public float backgroundAlpha = 1.0f, foregroundAlpha = 1.0f;
+    #endregion
 
-    private void Awake()
+    #region Hidden Variables
+    public UIActionPanePage Page { private get; set; }
+
+    private bool _allowInteraction = false;
+    #endregion
+
+    /// <summary>
+    /// Reflects allow interactions with the sprite raycast target.
+    /// </summary>
+    public bool AllowInteractions
     {
-        UpdateTextures();
-    }
-
-    private void OnValidate()
-    {
-        UpdateTextures();
-    }
-
-    private void UpdateTextures()
-    {
-        //Change foreground sprite.
-        foreground.sprite = shape;
-
-        //Create new material, set mask, and reapply.
-        _mat = Instantiate(maskedMaterial);
-        _mat.name = "Foreground Material Instance";
-        _mat.SetTexture("_MaskTex", mask);
-        foreground.material = _mat;
+        set
+        {
+            _allowInteraction = value;
+            background.raycastTarget = value;
+        }
     }
 
     /// <summary>
@@ -56,9 +46,18 @@ public class UIActionPaneSelection : MonoBehaviour
         background.color = c;
 
         //Update foreground color.
-        c = foreground.color;
+        c = sticker.color;
         c.a = foregroundAlpha * alpha;
-        foreground.color = c;
+        sticker.color = c;
     }
-    
+
+    public void Interact()
+    {
+        //If a page has been set, update the page's active selection with this component.
+        if(Page != null && _allowInteraction)
+        {
+            Page.activeSelection = this;
+            Page.actionPane.UpdateSticker();
+        }
+    }
 }

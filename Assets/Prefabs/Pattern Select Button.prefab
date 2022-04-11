@@ -58,14 +58,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.36078432, b: 0.81960785, a: 0}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 0.361, b: 0.81895, a: 0}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 440f11480513cd7469be7d95819b32ef, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -87,6 +87,7 @@ GameObject:
   - component: {fileID: 8202790684928277043}
   - component: {fileID: 2603080952039605340}
   - component: {fileID: -2275977581203192131}
+  - component: {fileID: -670835974107546123}
   m_Layer: 5
   m_Name: Pattern Select Button
   m_TagString: Untagged
@@ -135,8 +136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.3, g: 0.9142858, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_Color: {r: 1, g: 0.98845, b: 0.986, a: 0}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -164,10 +165,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a544383d6e2f8984d968fab82ec83620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  background: {fileID: 2603080952039605340}
-  foreground: {fileID: 947943025525462754}
-  shape: {fileID: 0}
-  mask: {fileID: 0}
+  shape: {fileID: 21300000, guid: 440f11480513cd7469be7d95819b32ef, type: 3}
+  mask: {fileID: 2800000, guid: 590ae289ce4a3954d9423242ee147cc4, type: 3}
+  color: {r: 1, g: 0.361, b: 0.81895, a: 1}
   maskedMaterial: {fileID: 2100000, guid: 9840bf756f441674f8017c097e728ea7, type: 2}
+  sticker: {fileID: 947943025525462754}
+  background: {fileID: 2603080952039605340}
   backgroundAlpha: 1
   foregroundAlpha: 1
+--- !u!114 &-670835974107546123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6682340375949537068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: -2275977581203192131}
+          m_TargetAssemblyTypeName: UIActionPaneSelection, Assembly-CSharp
+          m_MethodName: Interact
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
