@@ -14,7 +14,7 @@ public class UIActionPaneSelection : UISticker
     #endregion
 
     #region Hidden Variables
-    public UIActionPanePage Page { private get; set; }
+    public UIActionPaneSelectionPage Page { private get; set; }
 
     private bool _allowInteraction = false;
     #endregion

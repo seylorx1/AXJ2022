@@ -19,20 +19,26 @@ public class UIActionPane : MonoBehaviour
     public float colorTransitionSpeed = 2.0f;
     public Animator headingAnimator;
 
+    [Header("Designer Settings")]
+    public UIActionPanePage designerPage;
+
     [Header("Shape Settings")]
     public Button shapeButton;
-    public UIActionPanePage shapePage;
+    public UIActionPaneSelectionPage shapePage;
 
     [Header("Pattern Settings")]
     public Button patternButton;
-    public UIActionPanePage patternPage;
+    public UIActionPaneSelectionPage patternPage;
 
     [Header("Color Settings")]
     public Button colorButton;
-    public UIActionPanePage colorPage;
+    public UIActionPaneSelectionPage colorPage;
     #endregion
 
     #region Hidden Variables
+    /// <summary>
+    /// Used to prevent fade-in/fade-out transitions between pages from happening concurrently.
+    /// </summary>
     [HideInInspector]
     public bool pageTransitionLock = false;
 
@@ -53,6 +59,10 @@ public class UIActionPane : MonoBehaviour
         _image = GetComponent<Image>();
         _startColor = _image.color;
         _targetColor = _startColor;
+
+        //Designer page is the default. Ensure it's active.
+        designerPage.actionPane = this;
+        designerPage.PageActive = true;
 
         shapeButton     .onClick.AddListener(() => ChangeScreen(SelectedPage.Shape));
         shapePage       .actionPane = this;
@@ -90,6 +100,7 @@ public class UIActionPane : MonoBehaviour
         headingAnimator.SetBool("Show", page == SelectedPage.None);
 
         //Reset all pages.
+        designerPage.PageActive = false;
         shapePage.PageActive = false;
         patternPage.PageActive = false;
         colorPage.PageActive = false;
@@ -109,8 +120,11 @@ public class UIActionPane : MonoBehaviour
                 _targetColor = colorButton.colors.selectedColor;
                 colorPage.PageActive = true;
                 break;
+            case SelectedPage.None:
+                goto default;
             default:
                 _targetColor = _startColor;
+                designerPage.PageActive = true;
 
                 //Disable transition lock incase it's stuck
                 pageTransitionLock = false;
