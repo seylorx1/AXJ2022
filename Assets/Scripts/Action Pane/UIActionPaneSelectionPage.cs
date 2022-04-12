@@ -64,7 +64,7 @@ public class UIActionPaneSelectionPage : UIActionPanePage
             _pageSelections[i].SetOpacity(0.0f);
         }
     }
-    private void Update()
+    public override void Update()
     {
         //Calculate alpha to allow for overlap...
         //This value is not bound between 0 and 1. Clamping occurs inside of SetOpacity method.
@@ -95,6 +95,8 @@ public class UIActionPaneSelectionPage : UIActionPanePage
             //Auto-clamped in this method...
             _pageSelections[i].SetOpacity(AlphaProgress - GetOffsetStart(i));
         }
+
+        base.Update();
     }
 
     private float GetOffsetStart(int index)

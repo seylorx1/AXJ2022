@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIActionPanePage : MonoBehaviour
+public abstract class UIActionPanePage : ClickHandler
 {
     [HideInInspector]
     public UIActionPane actionPane;
@@ -22,7 +22,11 @@ public class UIActionPanePage : MonoBehaviour
         set
         {
             _pageActive = value;
+
             OnPageActiveChanged();
+
+            //Only poll clicks if the page is active.
+            pollClicks = _pageActive;
         }
     }
 
