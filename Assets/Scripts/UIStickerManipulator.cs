@@ -23,6 +23,7 @@ public class UIStickerManipulator : MonoBehaviour
 
     private RectTransform _rectTransform;
 
+    private Vector3 _previousPosition;
     private Vector2 _previousSize;
 
     public bool PointInManipulatorControls(Vector2 screenPoint)
@@ -56,11 +57,40 @@ public class UIStickerManipulator : MonoBehaviour
             }
 
             Vector2 relativeScreenPoint = Vector2.zero;
-            if (scaleDragControlBR.GetRelativeDrag(out relativeScreenPoint))
+            Vector2 scaleInvert = -Vector2.one;
+            bool scaled = false;
+
+            if (scaleDragControlBL.GetRelativeDrag(out relativeScreenPoint))
             {
+                scaled = true;
+            }
+            else if (scaleDragControlBR.GetRelativeDrag(out relativeScreenPoint))
+            {
+                scaleInvert.x *= -1.0f;
+                scaled = true;
+            }
+            else if (scaleDragControlTL.GetRelativeDrag(out relativeScreenPoint))
+            {
+                scaleInvert.y *= -1.0f;
+                scaled = true;
+            }
+            else if (scaleDragControlTR.GetRelativeDrag(out relativeScreenPoint))
+            {
+                scaleInvert *= -1.0f;
+                scaled = true;
+            }
+
+            if(scaled)
+            {
+                targetSticker.position = _previousPosition + (Vector3)relativeScreenPoint * 0.5f;
+
+                relativeScreenPoint *= scaleInvert;
+
+                targetSticker.sizeDelta = _previousSize + (relativeScreenPoint * 1.5f);
             }
             else
             {
+                _previousPosition = targetSticker.position;
                 _previousSize = targetSticker.rect.size;
             }
 

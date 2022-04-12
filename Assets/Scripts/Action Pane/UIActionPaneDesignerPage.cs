@@ -29,8 +29,7 @@ public class UIActionPaneDesignerPage : UIActionPanePage
             return;
         }
 
-        //Reset the sticker manipulator's target.
-        stickerManipulator.targetSticker = null;
+        TargetSticker(null);
 
         //Return if the sticker is outside the frame
         if (!RectTransformUtility.RectangleContainsScreenPoint(touchArea, screenPoint))
@@ -43,16 +42,20 @@ public class UIActionPaneDesignerPage : UIActionPanePage
             //Check if the point is touching ANY other sticker.
             if (RectTransformUtility.RectangleContainsScreenPoint(placedSticker.sticker.rectTransform, screenPoint))
             {
-                //Move the sticker to the top.
-                placedSticker.sticker.transform.SetAsLastSibling();
+                //Check if selected sticker was actually selected
+                //(This ensures that a transparent pixel wasn't selected)
+                if (placedSticker.ValidScreenPoint(screenPoint))
+                {
 
-                //Set drag position to the current screen point.
-                //This allows for dragging without snapping
-                _dragPosition = screenPoint;
+                    //Target new sticker
+                    TargetSticker(placedSticker);
 
-                //Update sticker manipulator with new target.
-                stickerManipulator.targetSticker = placedSticker.sticker.rectTransform;
-                return;
+                    //Set drag position to the current screen point.
+                    //This allows for dragging without snapping
+                    _dragPosition = screenPoint;
+
+                    return;
+                }
             }
         }
 
@@ -86,6 +89,21 @@ public class UIActionPaneDesignerPage : UIActionPanePage
         }
     }
 
+    private void TargetSticker(UISticker placedSticker)
+    {
+        if(placedSticker == null)
+        {
+            //Reset the sticker manipulator's target.
+            stickerManipulator.targetSticker = null;
+            return;
+        }
+
+        //Move the sticker to the top.
+        placedSticker.transform.SetAsLastSibling();
+
+        //Update sticker manipulator with new target.
+        stickerManipulator.targetSticker = placedSticker.GetComponent<RectTransform>();
+    }
     private void PlaceSticker(Vector2 point)
     {
         //Check the sticker doesn't already exist

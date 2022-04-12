@@ -44,4 +44,30 @@ public class UISticker : MonoBehaviour
         _mat.SetTexture("_MaskTex", mask);
         sticker.material = _mat;
     }
+
+    public bool ValidScreenPoint(Vector2 screenPoint)
+    {
+        Vector2 localPoint;
+
+        if(RectTransformUtility.ScreenPointToLocalPointInRectangle(sticker.rectTransform, screenPoint, null, out localPoint))
+        {
+            //remap local point so values reflect UV coordinates
+            localPoint.x += sticker.rectTransform.rect.width / 2.0f;
+            localPoint.x /= sticker.rectTransform.rect.width;
+            localPoint.y += sticker.rectTransform.rect.height / 2.0f;
+            localPoint.y /= sticker.rectTransform.rect.height;
+
+            //Get texture position
+            Vector2 texPos = localPoint;
+            texPos.x *= shape.texture.width;
+            texPos.y *= shape.texture.height;
+
+            //Get alpha from texture position on shape
+            float a = shape.texture.GetPixel((int)texPos.x, (int)texPos.y).a;
+
+            return a > 0.1f;
+        }
+
+        return false;
+    }
 }
