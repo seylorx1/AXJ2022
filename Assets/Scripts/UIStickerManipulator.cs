@@ -23,8 +23,8 @@ public class UIStickerManipulator : MonoBehaviour
 
     private RectTransform _rectTransform;
 
-    private Vector3 _previousPosition;
-    private Vector2 _previousSize;
+    private Vector2 _previousPosition;
+    private Vector2 _previousScale;
 
     public bool PointInManipulatorControls(Vector2 screenPoint)
     {
@@ -57,41 +57,56 @@ public class UIStickerManipulator : MonoBehaviour
             }
 
             Vector2 relativeScreenPoint = Vector2.zero;
-            Vector2 scaleInvert = -Vector2.one;
+            Vector2 selectedPoint = _previousScale / 2.0f;
+
             bool scaled = false;
 
             if (scaleDragControlBL.GetRelativeDrag(out relativeScreenPoint))
+            {
+                selectedPoint *= -1.0f;
+                scaled = true;
+            }
+            else if (scaleDragControlTL.GetRelativeDrag(out relativeScreenPoint))
+            {
+                selectedPoint.x *= -1.0f;
+                scaled = true;
+            }
+            else if (scaleDragControlTR.GetRelativeDrag(out relativeScreenPoint))
             {
                 scaled = true;
             }
             else if (scaleDragControlBR.GetRelativeDrag(out relativeScreenPoint))
             {
-                scaleInvert.x *= -1.0f;
-                scaled = true;
-            }
-            else if (scaleDragControlTL.GetRelativeDrag(out relativeScreenPoint))
-            {
-                scaleInvert.y *= -1.0f;
-                scaled = true;
-            }
-            else if (scaleDragControlTR.GetRelativeDrag(out relativeScreenPoint))
-            {
-                scaleInvert *= -1.0f;
+                selectedPoint.y *= -1.0f;
                 scaled = true;
             }
 
-            if(scaled)
+            if (scaled)
             {
-                targetSticker.position = _previousPosition + (Vector3)relativeScreenPoint * 0.5f;
+                //Find the opposite point to the current.
+                Vector2 oppositePoint = selectedPoint * -1.0f;
 
-                relativeScreenPoint *= scaleInvert;
+                //Rotate screen input based on the opposite sticker rotation.
+                //This should orient the input from world to local space.
+                Vector2 rotatedScreenPoint = relativeScreenPoint.Rotate(-targetSticker.rotation.eulerAngles.z);
 
-                targetSticker.sizeDelta = _previousSize + (relativeScreenPoint * 1.5f);
+                //Calculate new scale
+                Vector2 scale = (selectedPoint * 2.0f) + rotatedScreenPoint;
+
+
+                targetSticker.position = _previousPosition + (-selectedPoint + (scale / 2.0f)).Rotate(targetSticker.rotation.eulerAngles.z);
+
+                //Constrain scale using absolute values and limit to a range.
+                scale.x = Mathf.Max(Mathf.Abs(scale.x), 50.0f);
+                scale.y = Mathf.Max(Mathf.Abs(scale.y), 50.0f);
+
+                //Apply scale
+                targetSticker.sizeDelta = scale;
             }
             else
             {
                 _previousPosition = targetSticker.position;
-                _previousSize = targetSticker.rect.size;
+                _previousScale = targetSticker.sizeDelta;
             }
 
             _rectTransform.position = targetSticker.position;

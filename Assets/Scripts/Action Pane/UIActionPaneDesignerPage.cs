@@ -9,6 +9,8 @@ public class UIActionPaneDesignerPage : UIActionPanePage
     public RectTransform touchArea;
     public Transform stickersParent;
     public UIStickerManipulator stickerManipulator;
+    public RectTransform trashArea;
+    public Animator trashAnimator;
 
     [Header("Assets")]
     public InputActionAsset bindings;
@@ -18,6 +20,7 @@ public class UIActionPaneDesignerPage : UIActionPanePage
 
     private bool _manipulatorControlsInUse = false;
     private Vector2 _dragPosition;
+    private bool _wasDraggingSticker = false;
 
     public override void OnClickDown(Vector2 screenPoint)
     {
@@ -76,16 +79,23 @@ public class UIActionPaneDesignerPage : UIActionPanePage
             return;
         }
 
-        if (stickerManipulator.targetSticker != null)
+        DragSticker(screenPoint);
+    }
+
+    public override void OnClickUp(Vector2 screenPoint)
+    {
+        if(_wasDraggingSticker)
         {
-            //Get the relative change from the previous frame to the current for pointer and sticker position.
-            Vector2 _dragDeltaPosition = screenPoint - _dragPosition;
+            //Close trash animator
+            trashAnimator.SetBool("Open", false);
 
-            //Drag sticker to new position
-            stickerManipulator.targetSticker.position += (Vector3)_dragDeltaPosition;
+            if(stickerManipulator.targetSticker != null && RectTransformUtility.RectangleContainsScreenPoint(trashArea, _dragPosition))
+            {
+                Destroy(stickerManipulator.targetSticker.gameObject);
+                TargetSticker(null);
+            }
 
-            //Update drag position
-            _dragPosition = screenPoint;
+            _wasDraggingSticker = false;
         }
     }
 
@@ -95,6 +105,9 @@ public class UIActionPaneDesignerPage : UIActionPanePage
         {
             //Reset the sticker manipulator's target.
             stickerManipulator.targetSticker = null;
+
+            //Reset trash animator
+            trashAnimator.SetBool("Show", false);
             return;
         }
 
@@ -103,6 +116,9 @@ public class UIActionPaneDesignerPage : UIActionPanePage
 
         //Update sticker manipulator with new target.
         stickerManipulator.targetSticker = placedSticker.GetComponent<RectTransform>();
+
+        //Show trash Icon
+        trashAnimator.SetBool("Show", true);
     }
     private void PlaceSticker(Vector2 point)
     {
@@ -120,6 +136,27 @@ public class UIActionPaneDesignerPage : UIActionPanePage
 
         //Add it to the list
         placedStickers.Add(sticker);
+    }
+
+    private void DragSticker(Vector2 screenPoint)
+    {
+        _wasDraggingSticker = false;
+        if (stickerManipulator.targetSticker != null)
+        {
+            //Get the relative change from the previous frame to the current for pointer and sticker position.
+            Vector2 _dragDeltaPosition = screenPoint - _dragPosition;
+
+            //Drag sticker to new position
+            stickerManipulator.targetSticker.position += (Vector3)_dragDeltaPosition;
+
+            //Update drag position
+            _dragPosition = screenPoint;
+
+            //Update trash animator
+            trashAnimator.SetBool("Open", RectTransformUtility.RectangleContainsScreenPoint(trashArea, screenPoint));
+
+            _wasDraggingSticker = true;
+        }
     }
 
     protected override void OnPageActiveChanged()
